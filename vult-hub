@@ -1,61 +1,62 @@
 local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-
--- GUI Setup
 local gui = Instance.new("ScreenGui")
 gui.Name = "BrainrotGui"
 gui.ResetOnSpawn = false
 gui.Parent = game.CoreGui
 
+-- UI Frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 120)
-frame.Position = UDim2.new(0, 20, 0, 100)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.Size = UDim2.new(0, 220, 0, 140)
+frame.Position = UDim2.new(0, 15, 0, 100)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 frame.BorderSizePixel = 0
 frame.Parent = gui
 
--- UI Corner
-local corner = Instance.new("UICorner")
+local corner = Instance.new("UICorner", frame)
 corner.CornerRadius = UDim.new(0, 10)
-corner.Parent = frame
 
--- Speed Button
+-- Speed Boost Button
 local speedBtn = Instance.new("TextButton")
-speedBtn.Size = UDim2.new(1, -20, 0, 40)
+speedBtn.Size = UDim2.new(1, -20, 0, 50)
 speedBtn.Position = UDim2.new(0, 10, 0, 10)
-speedBtn.Text = "💨 Speed Boost (2x)"
-speedBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 200)
-speedBtn.TextColor3 = Color3.new(1, 1, 1)
+speedBtn.Text = "💨 Speed x4"
+speedBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+speedBtn.TextColor3 = Color3.new(1,1,1)
 speedBtn.Font = Enum.Font.GothamBold
 speedBtn.TextScaled = true
 speedBtn.Parent = frame
+Instance.new("UICorner", speedBtn).CornerRadius = UDim.new(0, 8)
 
-local speedCorner = Instance.new("UICorner", speedBtn)
-
-speedBtn.MouseButton1Click:Connect(function()
-	local h = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-	if h then
-		h.WalkSpeed = h.WalkSpeed * 2
-	end
-end)
-
--- Jump Button
+-- Jump Boost Button
 local jumpBtn = Instance.new("TextButton")
-jumpBtn.Size = UDim2.new(1, -20, 0, 40)
-jumpBtn.Position = UDim2.new(0, 10, 0, 70)
-jumpBtn.Text = "🦘 Jump Boost (2x)"
-jumpBtn.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
-jumpBtn.TextColor3 = Color3.new(1, 1, 1)
+jumpBtn.Size = UDim2.new(1, -20, 0, 50)
+jumpBtn.Position = UDim2.new(0, 10, 0, 80)
+jumpBtn.Text = "🦘 Jump x4"
+jumpBtn.BackgroundColor3 = Color3.fromRGB(250, 150, 50)
+jumpBtn.TextColor3 = Color3.new(1,1,1)
 jumpBtn.Font = Enum.Font.GothamBold
 jumpBtn.TextScaled = true
 jumpBtn.Parent = frame
+Instance.new("UICorner", jumpBtn).CornerRadius = UDim.new(0, 8)
 
-local jumpCorner = Instance.new("UICorner", jumpBtn)
+-- Mobile-safe Character Reference
+local function getHumanoid()
+	local char = player.Character or player.CharacterAdded:Wait()
+	return char:FindFirstChildOfClass("Humanoid")
+end
 
-jumpBtn.MouseButton1Click:Connect(function()
-	local h = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-	if h then
-		h.JumpPower = h.JumpPower * 2
+-- Speed Boost Function
+speedBtn.MouseButton1Click:Connect(function()
+	local hum = getHumanoid()
+	if hum then
+		hum.WalkSpeed = 16 * 4 -- Default WalkSpeed * 4
 	end
-    end)
+end)
+
+-- Jump Boost Function
+jumpBtn.MouseButton1Click:Connect(function()
+	local hum = getHumanoid()
+	if hum then
+		hum.JumpPower = 50 * 4 -- Default JumpPower * 4
+	end
+end)
