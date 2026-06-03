@@ -270,16 +270,24 @@ createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
 end)
 
 -- AutoShoot
+local autoShootEnabled = false  -- Shared state
+
 createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
+    autoShootEnabled = state
+    
     if state then
         task.spawn(function()
             local e = nil
-            while state do
+            
+            while autoShootEnabled do  -- Now uses the shared variable
                 task.wait(0.07)
                 local p = game.Players.LocalPlayer
                 local c = p.Character
-                if not c or not c:FindFirstChild("HumanoidRootPart") then continue end
-               
+                if not c or not c:FindFirstChild("HumanoidRootPart") then 
+                    task.wait(0.1)
+                    continue 
+                end
+             
                 if not e then
                     for _, v in ipairs(game:GetDescendants()) do
                         if v.Name == "RocketLauncherEvent" and v:IsA("RemoteEvent") then
@@ -288,7 +296,7 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
                         end
                     end
                 end
-               
+             
                 if e then
                     local root = c.HumanoidRootPart
                     local closest, minD = nil, math.huge
@@ -302,7 +310,7 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
                             end
                         end
                     end
-                   
+                 
                     if closest then
                         e:FireServer(CFrame.new(root.Position, closest.Position))
                     end
