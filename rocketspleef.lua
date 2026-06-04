@@ -2,18 +2,35 @@ local RSScript = Instance.new("ScreenGui")
 RSScript.Name = "RSscript"
 RSScript.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 RSScript.IgnoreGuiInset = true
-RSScript.ResetOnSpawn = false
+RSScript.ResetOnSpawn = false 
 
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = RSScript
-MainFrame.Size = UDim2.new(0, 434, 0, 378)
-MainFrame.Position = UDim2.new(0.343, 0, 0.196, 0)
-MainFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-MainFrame.BorderSizePixel = 0
-MainFrame.Visible = true
+-- === KEY SYSTEM ===
+local KeyFrame = Instance.new("Frame")
+KeyFrame.Name = "KeyFrame"
+KeyFrame.Parent = RSScript
+KeyFrame.Size = UDim2.new(0, 356, 0, 147)
+KeyFrame.Position = UDim2.new(0.371, 0, 0.408, 0)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+KeyFrame.BorderSizePixel = 0
+KeyFrame.Visible = true
 
--- FIXED DRAGGING FOR XENO (moved to main script + extra RenderStepped force)
+local Title = Instance.new("Frame")
+Title.Name = "Title"
+Title.Parent = KeyFrame
+Title.Size = UDim2.new(0, 356, 0, 46)
+Title.Position = UDim2.new(0, 0, -0.313, 0)
+Title.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+Title.BorderSizePixel = 0
+
+local textlabel = Instance.new("TextLabel")
+textlabel.Parent = Title
+textlabel.Size = UDim2.new(1, 0, 1, 0)
+textlabel.BackgroundTransparency = 1
+textlabel.Text = "Key System"
+textlabel.TextSize = 39
+textlabel.Font = Enum.Font.FredokaOne
+textlabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
 local dragging = false
 local dragInput = nil
 local dragStart = nil
@@ -22,32 +39,14 @@ local startPos = nil
 local function update(input)
     if not dragging then return end
     local delta = input.Position - dragStart
-    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    KeyFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
-
--- Use Title for dragging (more reliable on Xeno)
-local Title = Instance.new("TextLabel")
-Title.Name = "Title"
-Title.Parent = MainFrame
-Title.Size = UDim2.new(1, -50, 0, 50)
-Title.Position = UDim2.new(0, 0, 0, 0)
-Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Title.Text = "Rocket Spleef"
-Title.Font = Enum.Font.FredokaOne
-Title.TextScaled = true
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.BorderSizePixel = 0
-
-local TitleStroke = Instance.new("UIStroke")
-TitleStroke.Parent = Title
-TitleStroke.Thickness = 3
-TitleStroke.Color = Color3.fromRGB(0, 0, 0)
 
 Title.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
-        startPos = MainFrame.Position
+        startPos = KeyFrame.Position
     end
 end)
 
@@ -69,16 +68,142 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
     end
 end)
 
--- Extra Xeno force
 game:GetService("RunService").RenderStepped:Connect(function()
     if dragging and dragInput then
         update(dragInput)
     end
 end)
 
--- Close Button (X)
+local textbox = Instance.new("TextBox")
+textbox.Parent = KeyFrame
+textbox.Size = UDim2.new(0, 179, 0, 28)
+textbox.Position = UDim2.new(0.247, 0, 0.401, 0)
+textbox.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+textbox.BorderSizePixel = 0
+textbox.PlaceholderText = "enter the key"
+textbox.TextSize = 14
+textbox.Text = ""
+textbox.Font = Enum.Font.FredokaOne
+textbox.PlaceholderColor3 = Color3.fromRGB(127, 127, 127)
+textbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+local submitBtn = Instance.new("TextButton")
+submitBtn.Parent = KeyFrame
+submitBtn.Size = UDim2.new(0, 93, 0, 30)
+submitBtn.Position = UDim2.new(0.1, 0, 0.687, 0)
+submitBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+submitBtn.BorderSizePixel = 0
+submitBtn.Text = "Submit"
+submitBtn.Font = Enum.Font.FredokaOne
+submitBtn.TextSize = 14
+submitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+local getBtn = Instance.new("TextButton")
+getBtn.Parent = KeyFrame
+getBtn.Size = UDim2.new(0, 93, 0, 30)
+getBtn.Position = UDim2.new(0.55, 0, 0.687, 0)
+getBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+getBtn.BorderSizePixel = 0
+getBtn.Text = "Get Key"
+getBtn.Font = Enum.Font.FredokaOne
+getBtn.TextSize = 14
+getBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = RSScript
+MainFrame.Size = UDim2.new(0, 434, 0, 378)
+MainFrame.Position = UDim2.new(0.343, 0, 0.196, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
+MainFrame.BorderSizePixel = 0
+MainFrame.Visible = false
+
+local correctKey = "rocketspleefvulture"
+
+getBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/5QWF3XqkV")
+
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Copied";
+        Text = "Discord link copied to clipboard!";
+        Duration = 3;
+    })
+end)
+
+submitBtn.MouseButton1Click:Connect(function()
+    if textbox.Text == correctKey then
+        KeyFrame:Destroy()
+        MainFrame.Visible = true
+    else
+        submitBtn.Text = "Wrong Key"
+        submitBtn.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+        task.wait(1.5)
+        submitBtn.Text = "Submit"
+        submitBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    end
+end)
+
+local draggingMain = false
+local dragInputMain = nil
+local dragStartMain = nil
+local startPosMain = nil
+
+local function updateMain(input)
+    if not draggingMain then return end
+    local delta = input.Position - dragStartMain
+    MainFrame.Position = UDim2.new(startPosMain.X.Scale, startPosMain.X.Offset + delta.X, startPosMain.Y.Scale, startPosMain.Y.Offset + delta.Y)
+end
+
+local TitleMain = Instance.new("TextLabel")
+TitleMain.Name = "Title"
+TitleMain.Parent = MainFrame
+TitleMain.Size = UDim2.new(1, -50, 0, 50)
+TitleMain.Position = UDim2.new(0, 0, 0, 0)
+TitleMain.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TitleMain.Text = "Rocket Spleef"
+TitleMain.Font = Enum.Font.FredokaOne
+TitleMain.TextScaled = true
+TitleMain.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleMain.BorderSizePixel = 0
+
+local TitleStroke = Instance.new("UIStroke")
+TitleStroke.Parent = TitleMain
+TitleStroke.Thickness = 3
+TitleStroke.Color = Color3.fromRGB(0, 0, 0)
+
+TitleMain.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingMain = true
+        dragStartMain = input.Position
+        startPosMain = MainFrame.Position
+    end
+end)
+
+TitleMain.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingMain = false
+    end
+end)
+
+TitleMain.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInputMain = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if draggingMain and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        updateMain(input)
+    end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if draggingMain and dragInputMain then
+        updateMain(dragInputMain)
+    end
+end)
+
 local CloseButton = Instance.new("TextButton")
-CloseButton.Name = "CloseButton"
 CloseButton.Parent = MainFrame
 CloseButton.Size = UDim2.new(0, 40, 0, 40)
 CloseButton.Position = UDim2.new(1, -45, 0, 5)
@@ -88,16 +213,16 @@ CloseButton.Font = Enum.Font.FredokaOne
 CloseButton.TextSize = 28
 CloseButton.TextColor3 = Color3.fromRGB(255, 60, 60)
 CloseButton.BorderSizePixel = 0
+
 local CloseCorner = Instance.new("UICorner")
 CloseCorner.CornerRadius = UDim.new(0.3, 0)
 CloseCorner.Parent = CloseButton
+
 CloseButton.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
 end)
 
--- Credit
 local Credit = Instance.new("TextLabel")
-Credit.Name = "Credit"
 Credit.Parent = MainFrame
 Credit.Size = UDim2.new(0, 221, 0, 33)
 Credit.Position = UDim2.new(0.258, 0, 0.894, 0)
@@ -108,7 +233,6 @@ Credit.TextColor3 = Color3.fromRGB(255, 255, 255)
 Credit.TextScaled = true
 
 local LeftFrame = Instance.new("Frame")
-LeftFrame.Name = "LeftFrame"
 LeftFrame.Parent = MainFrame
 LeftFrame.Size = UDim2.new(0, 92, 0, 328)
 LeftFrame.Position = UDim2.new(0, 0, 0.132, 0)
@@ -116,7 +240,6 @@ LeftFrame.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
 LeftFrame.BorderSizePixel = 0
 
 local Tab1Frame = Instance.new("Frame")
-Tab1Frame.Name = "Tab1Frame"
 Tab1Frame.Parent = MainFrame
 Tab1Frame.Size = UDim2.new(0, 336, 0, 328)
 Tab1Frame.Position = UDim2.new(0, 92, 0.132, 0)
@@ -129,7 +252,7 @@ local function createToggle(parent, yScale, labelText, toggleFunc)
     toggleFrame.Size = UDim2.new(0, 92, 0, 42)
     toggleFrame.Position = UDim2.new(0.67, 0, yScale, 0)
     toggleFrame.BackgroundTransparency = 1
-   
+
     local colorFrame = Instance.new("Frame")
     colorFrame.Name = "colorframe"
     colorFrame.Parent = toggleFrame
@@ -137,9 +260,8 @@ local function createToggle(parent, yScale, labelText, toggleFunc)
     colorFrame.Position = UDim2.new(0, 4, 0.5, -18.5)
     colorFrame.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
     colorFrame.BorderSizePixel = 0
-   
     Instance.new("UICorner", colorFrame).CornerRadius = UDim.new(0.5, 0)
-   
+
     local knob = Instance.new("ImageButton")
     knob.Name = "ImageButton"
     knob.Parent = colorFrame
@@ -148,37 +270,29 @@ local function createToggle(parent, yScale, labelText, toggleFunc)
     knob.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
     knob.BorderSizePixel = 0
     knob.ZIndex = 2
-   
     Instance.new("UICorner", knob).CornerRadius = UDim.new(0.5, 0)
-   
+
     local isOn = false
     local tweenService = game:GetService("TweenService")
     local knobSize = 32
-   
+
     knob.MouseButton1Click:Connect(function()
         isOn = not isOn
-       
         if isOn then
             colorFrame.BackgroundColor3 = Color3.fromRGB(0, 100, 0)
             knob.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-            tweenService:Create(knob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
-                Position = UDim2.new(1, -(knobSize + 10), 0.5, -knobSize/2)
-            }):Play()
+            tweenService:Create(knob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {Position = UDim2.new(1, -(knobSize + 10), 0.5, -knobSize/2)}):Play()
             toggleFunc(true)
         else
             colorFrame.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
             knob.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-            tweenService:Create(knob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
-                Position = UDim2.new(0, 5, 0.5, -knobSize/2)
-            }):Play()
+            tweenService:Create(knob, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {Position = UDim2.new(0, 5, 0.5, -knobSize/2)}):Play()
             toggleFunc(false)
         end
     end)
-   
     return toggleFrame
 end
 
--- Labels
 local antiDieText = Instance.new("TextLabel")
 antiDieText.Parent = Tab1Frame
 antiDieText.Size = UDim2.new(0, 186, 0, 40)
@@ -209,7 +323,6 @@ autoText.Font = Enum.Font.FredokaOne
 autoText.TextSize = 42
 autoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- AntiDie
 createToggle(Tab1Frame, 0.095, "AntiDie", function(state)
     if state then
         local p = workspace:FindFirstChild("hello") or Instance.new("Part")
@@ -225,7 +338,6 @@ createToggle(Tab1Frame, 0.095, "AntiDie", function(state)
     end
 end)
 
--- Aimlock
 local aimlockConnection = nil
 createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
     if state then
@@ -236,7 +348,6 @@ createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
         local localPlayer = Players.LocalPlayer
         local MAX_DISTANCE = 35
         local SMOOTHNESS = 0.10
-       
         aimlockConnection = RunService.RenderStepped:Connect(function()
             local myChar = localPlayer.Character
             local myRoot = myChar and myChar:FindFirstChild("HumanoidRootPart")
@@ -269,25 +380,17 @@ createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
     end
 end)
 
--- AutoShoot
-local autoShootEnabled = false  -- Shared state
-
+local autoShootEnabled = false
 createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
     autoShootEnabled = state
-    
     if state then
         task.spawn(function()
             local e = nil
-            
-            while autoShootEnabled do  -- Now uses the shared variable
+            while autoShootEnabled do
                 task.wait(0.07)
                 local p = game.Players.LocalPlayer
                 local c = p.Character
-                if not c or not c:FindFirstChild("HumanoidRootPart") then 
-                    task.wait(0.1)
-                    continue 
-                end
-             
+                if not c or not c:FindFirstChild("HumanoidRootPart") then task.wait(0.1) continue end
                 if not e then
                     for _, v in ipairs(game:GetDescendants()) do
                         if v.Name == "RocketLauncherEvent" and v:IsA("RemoteEvent") then
@@ -296,13 +399,13 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
                         end
                     end
                 end
-             
                 if e then
                     local root = c.HumanoidRootPart
                     local closest, minD = nil, math.huge
                     for _, pl in ipairs(game.Players:GetPlayers()) do
                         if pl ~= p and pl.Character and pl.Character:FindFirstChild("HumanoidRootPart") then
-                            local hrp = pl.Character.HumanoidRootPart
+                            local hrp = character.HumanoidRootPart
+                            local pointBelow = hrp.Position - Vector3.new(0, 10, 0)
                             local d = (root.Position - hrp.Position).Magnitude
                             if d < minD then
                                 minD = d
@@ -310,7 +413,6 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
                             end
                         end
                     end
-                 
                     if closest then
                         e:FireServer(CFrame.new(root.Position, closest.Position))
                     end
@@ -320,13 +422,11 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
     end
 end)
 
--- Keybind to toggle MainFrame (RightShift)
-local UIS = game:GetService("UserInputService")
-UIS.InputBegan:Connect(function(input, gp)
+game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.RightShift then
         MainFrame.Visible = not MainFrame.Visible
     end
 end)
 
-print("UI Loaded with Keybind (RightShift), Close Button, and Fixed Xeno Dragging")
+print("Rocket Spleef Exploit Has Loaded!")
