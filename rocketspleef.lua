@@ -38,7 +38,7 @@ else
     textlabel.Font = Enum.Font.FredokaOne
     textlabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Dragging
+    -- Dragging for Key System
     local dragging = false
     local dragInput = nil
     local dragStart = nil
@@ -83,8 +83,8 @@ else
     -- TextBox (Fixed Position)
     local textbox = Instance.new("TextBox")
     textbox.Parent = KeyFrame
-    textbox.Size = isMobile and UDim2.new(0.8, 0, 0, 35) or UDim2.new(0.7, 0, 0, 32)
-    textbox.Position = UDim2.new(0.15, 0, 0.42, 0)
+    textbox.Size = isMobile and UDim2.new(0.8, 0, 0, 35) or UDim2.new(0, 179, 0, 28)
+    textbox.Position = UDim2.new(0.247, 0, 0.401, 0)
     textbox.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
     textbox.BorderSizePixel = 0
     textbox.PlaceholderText = "enter the key"
@@ -94,11 +94,10 @@ else
     textbox.PlaceholderColor3 = Color3.fromRGB(127, 127, 127)
     textbox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Submit Button
     local submitBtn = Instance.new("TextButton")
     submitBtn.Parent = KeyFrame
     submitBtn.Size = isMobile and UDim2.new(0.35, 0, 0, 40) or UDim2.new(0, 93, 0, 30)
-    submitBtn.Position = UDim2.new(0.1, 0, 0.72, 0)
+    submitBtn.Position = UDim2.new(0.1, 0, 0.687, 0)
     submitBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     submitBtn.BorderSizePixel = 0
     submitBtn.Text = "Submit"
@@ -106,11 +105,10 @@ else
     submitBtn.TextSize = isMobile and 18 or 14
     submitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Get Key Button
     local getBtn = Instance.new("TextButton")
     getBtn.Parent = KeyFrame
     getBtn.Size = isMobile and UDim2.new(0.35, 0, 0, 40) or UDim2.new(0, 93, 0, 30)
-    getBtn.Position = UDim2.new(0.55, 0, 0.72, 0)
+    getBtn.Position = UDim2.new(0.55, 0, 0.687, 0)
     getBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     getBtn.BorderSizePixel = 0
     getBtn.Text = "Get Key"
@@ -150,8 +148,7 @@ MainFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
 MainFrame.BorderSizePixel = 0
 MainFrame.Visible = getgenv().RSKeyVerified or false
 
--- (Rest of Main UI code - dragging, close button, toggles, etc.)
-
+-- Dragging MainFrame
 local draggingMain = false
 local dragInputMain = nil
 local dragStartMain = nil
@@ -180,7 +177,6 @@ TitleStroke.Parent = TitleMain
 TitleStroke.Thickness = 3
 TitleStroke.Color = Color3.fromRGB(0, 0, 0)
 
--- Dragging connections for MainFrame (same as before)
 TitleMain.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         draggingMain = true
@@ -211,7 +207,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
     if draggingMain and dragInputMain then updateMain(dragInputMain) end
 end)
 
--- Close Button, Credit, Frames, Toggles...
+-- Close Button
 local CloseButton = Instance.new("TextButton")
 CloseButton.Parent = MainFrame
 CloseButton.Size = UDim2.new(0, isMobile and 35 or 40, 0, isMobile and 35 or 40)
@@ -223,7 +219,9 @@ CloseButton.TextSize = isMobile and 24 or 28
 CloseButton.TextColor3 = Color3.fromRGB(255, 60, 60)
 CloseButton.BorderSizePixel = 0
 
-local CloseCorner = Instance.new("UICorner", CloseButton)
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0.3, 0)
+CloseCorner.Parent = CloseButton
 
 CloseButton.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
@@ -242,14 +240,14 @@ Credit.TextScaled = true
 local LeftFrame = Instance.new("Frame")
 LeftFrame.Parent = MainFrame
 LeftFrame.Size = isMobile and UDim2.new(0.22, 0, 0.85, 0) or UDim2.new(0, 92, 0, 328)
-LeftFrame.Position = UDim2.new(0, 0, 0.13, 0)
+LeftFrame.Position = UDim2.new(0, 0, 0.132, 0)
 LeftFrame.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
 LeftFrame.BorderSizePixel = 0
 
 local Tab1Frame = Instance.new("Frame")
 Tab1Frame.Parent = MainFrame
 Tab1Frame.Size = isMobile and UDim2.new(0.75, 0, 0.85, 0) or UDim2.new(0, 336, 0, 328)
-Tab1Frame.Position = UDim2.new(0.23, 0, 0.13, 0)
+Tab1Frame.Position = UDim2.new(0, 92, 0.132, 0)
 Tab1Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
 Tab1Frame.BorderSizePixel = 0
 
@@ -300,38 +298,38 @@ local function createToggle(parent, yScale, labelText, toggleFunc)
     return toggleFrame
 end
 
--- Labels
+-- === LABELS - EXACT ORIGINAL PC POSITIONS ===
 local antiDieText = Instance.new("TextLabel")
 antiDieText.Parent = Tab1Frame
-antiDieText.Size = UDim2.new(0.9, 0, 0, isMobile and 35 or 40)
-antiDieText.Position = UDim2.new(0.05, 0, 0.095, 0)
+antiDieText.Size = UDim2.new(0, 186, 0, 40)
+antiDieText.Position = UDim2.new(0.146, 0, 0.095, 0)
 antiDieText.BackgroundTransparency = 1
 antiDieText.Text = "AntiDie"
 antiDieText.Font = Enum.Font.FredokaOne
 antiDieText.TextSize = isMobile and 32 or 44
 antiDieText.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-local aimText = Instance.new("TextLabel")
-aimText.Parent = Tab1Frame
-aimText.Size = UDim2.new(0.9, 0, 0, isMobile and 35 or 40)
-aimText.Position = UDim2.new(0.05, 0, 0.493, 0)
-aimText.BackgroundTransparency = 1
-aimText.Text = "Aimlock"
-aimText.Font = Enum.Font.FredokaOne
-aimText.TextSize = isMobile and 32 or 44
-aimText.TextColor3 = Color3.fromRGB(255, 255, 255)
-
 local autoText = Instance.new("TextLabel")
 autoText.Parent = Tab1Frame
-autoText.Size = UDim2.new(0.9, 0, 0, isMobile and 35 or 40)
-autoText.Position = UDim2.new(0.05, 0, 0.29, 0)
+autoText.Size = UDim2.new(0, 209, 0, 40)
+autoText.Position = UDim2.new(0.048, 0, 0.29, 0)
 autoText.BackgroundTransparency = 1
 autoText.Text = "AutoShoot"
 autoText.Font = Enum.Font.FredokaOne
 autoText.TextSize = isMobile and 30 or 42
 autoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Toggles
+local aimText = Instance.new("TextLabel")
+aimText.Parent = Tab1Frame
+aimText.Size = UDim2.new(0, 186, 0, 40)
+aimText.Position = UDim2.new(0.116, 0, 0.493, 0)
+aimText.BackgroundTransparency = 1
+aimText.Text = "Aimlock"
+aimText.Font = Enum.Font.FredokaOne
+aimText.TextSize = isMobile and 32 or 44
+aimText.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- === TOGGLES ===
 createToggle(Tab1Frame, 0.095, "AntiDie", function(state)
     if state then
         local p = workspace:FindFirstChild("hello") or Instance.new("Part")
