@@ -438,7 +438,7 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
                     if pl ~= p and pl.Character and pl.Character:FindFirstChild("HumanoidRootPart") then
                         local hrp = pl.Character.HumanoidRootPart
                         local d = (root.Position - hrp.Position).Magnitude
-                        if d < minD and d < 60 then
+                        if d < minD then
                             minD = d
                             closest = hrp
                         end
