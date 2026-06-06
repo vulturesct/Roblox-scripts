@@ -38,7 +38,7 @@ else
     textlabel.Font = Enum.Font.FredokaOne
     textlabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Dragging for KeyFrame
+    -- Dragging
     local dragging = false
     local dragInput = nil
     local dragStart = nil
@@ -80,10 +80,11 @@ else
         if dragging and dragInput then update(dragInput) end
     end)
 
+    -- TextBox (Fixed Position)
     local textbox = Instance.new("TextBox")
     textbox.Parent = KeyFrame
-    textbox.Size = isMobile and UDim2.new(0.8, 0, 0, 35) or UDim2.new(0, 179, 0, 28)
-    textbox.Position = UDim2.new(0.1, 0, 0.42, 0)
+    textbox.Size = isMobile and UDim2.new(0.8, 0, 0, 35) or UDim2.new(0.7, 0, 0, 32)
+    textbox.Position = UDim2.new(0.15, 0, 0.42, 0)
     textbox.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
     textbox.BorderSizePixel = 0
     textbox.PlaceholderText = "enter the key"
@@ -93,10 +94,11 @@ else
     textbox.PlaceholderColor3 = Color3.fromRGB(127, 127, 127)
     textbox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Submit Button
     local submitBtn = Instance.new("TextButton")
     submitBtn.Parent = KeyFrame
     submitBtn.Size = isMobile and UDim2.new(0.35, 0, 0, 40) or UDim2.new(0, 93, 0, 30)
-    submitBtn.Position = UDim2.new(0.1, 0, 0.7, 0)
+    submitBtn.Position = UDim2.new(0.1, 0, 0.72, 0)
     submitBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     submitBtn.BorderSizePixel = 0
     submitBtn.Text = "Submit"
@@ -104,10 +106,11 @@ else
     submitBtn.TextSize = isMobile and 18 or 14
     submitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Get Key Button
     local getBtn = Instance.new("TextButton")
     getBtn.Parent = KeyFrame
     getBtn.Size = isMobile and UDim2.new(0.35, 0, 0, 40) or UDim2.new(0, 93, 0, 30)
-    getBtn.Position = UDim2.new(0.55, 0, 0.7, 0)
+    getBtn.Position = UDim2.new(0.55, 0, 0.72, 0)
     getBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     getBtn.BorderSizePixel = 0
     getBtn.Text = "Get Key"
@@ -147,7 +150,8 @@ MainFrame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
 MainFrame.BorderSizePixel = 0
 MainFrame.Visible = getgenv().RSKeyVerified or false
 
--- Dragging for MainFrame
+-- (Rest of Main UI code - dragging, close button, toggles, etc.)
+
 local draggingMain = false
 local dragInputMain = nil
 local dragStartMain = nil
@@ -176,6 +180,7 @@ TitleStroke.Parent = TitleMain
 TitleStroke.Thickness = 3
 TitleStroke.Color = Color3.fromRGB(0, 0, 0)
 
+-- Dragging connections for MainFrame (same as before)
 TitleMain.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         draggingMain = true
@@ -206,7 +211,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
     if draggingMain and dragInputMain then updateMain(dragInputMain) end
 end)
 
--- Close Button
+-- Close Button, Credit, Frames, Toggles...
 local CloseButton = Instance.new("TextButton")
 CloseButton.Parent = MainFrame
 CloseButton.Size = UDim2.new(0, isMobile and 35 or 40, 0, isMobile and 35 or 40)
@@ -218,26 +223,22 @@ CloseButton.TextSize = isMobile and 24 or 28
 CloseButton.TextColor3 = Color3.fromRGB(255, 60, 60)
 CloseButton.BorderSizePixel = 0
 
-local CloseCorner = Instance.new("UICorner")
-CloseCorner.CornerRadius = UDim.new(0.3, 0)
-CloseCorner.Parent = CloseButton
+local CloseCorner = Instance.new("UICorner", CloseButton)
 
 CloseButton.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
 end)
 
--- Credit
 local Credit = Instance.new("TextLabel")
 Credit.Parent = MainFrame
-Credit.Size = UDim2.new(0.5, 0, 0, 30)
-Credit.Position = UDim2.new(0.25, 0, 0.9, 0)
+Credit.Size = UDim2.new(0, 221, 0, 33)
+Credit.Position = UDim2.new(0.258, 0, 0.894, 0)
 Credit.BackgroundTransparency = 1
 Credit.Text = "made by vulturewastaken7."
 Credit.Font = Enum.Font.FredokaOne
 Credit.TextColor3 = Color3.fromRGB(255, 255, 255)
 Credit.TextScaled = true
 
--- Frames
 local LeftFrame = Instance.new("Frame")
 LeftFrame.Parent = MainFrame
 LeftFrame.Size = isMobile and UDim2.new(0.22, 0, 0.85, 0) or UDim2.new(0, 92, 0, 328)
@@ -252,7 +253,6 @@ Tab1Frame.Position = UDim2.new(0.23, 0, 0.13, 0)
 Tab1Frame.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
 Tab1Frame.BorderSizePixel = 0
 
--- Create Toggle Function
 local function createToggle(parent, yScale, labelText, toggleFunc)
     local toggleFrame = Instance.new("Frame")
     toggleFrame.Parent = parent
@@ -331,8 +331,7 @@ autoText.Font = Enum.Font.FredokaOne
 autoText.TextSize = isMobile and 30 or 42
 autoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- === TOGGLES ===
--- AntiDie (NOW FIXED AND INCLUDED)
+-- Toggles
 createToggle(Tab1Frame, 0.095, "AntiDie", function(state)
     if state then
         local p = workspace:FindFirstChild("hello") or Instance.new("Part")
@@ -348,7 +347,6 @@ createToggle(Tab1Frame, 0.095, "AntiDie", function(state)
     end
 end)
 
--- Aimlock
 local aimlockConnection = nil
 createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
     if state then
@@ -357,8 +355,8 @@ createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
         local Players = game:GetService("Players")
         local camera = workspace.CurrentCamera
         local localPlayer = Players.LocalPlayer
-        local MAX_DISTANCE = isMobile and 40 or 35
-        local SMOOTHNESS = 0.12
+        local MAX_DISTANCE = 35
+        local SMOOTHNESS = 0.10
         aimlockConnection = RunService.RenderStepped:Connect(function()
             local myChar = localPlayer.Character
             local myRoot = myChar and myChar:FindFirstChild("HumanoidRootPart")
@@ -391,7 +389,6 @@ createToggle(Tab1Frame, 0.493, "Aimlock", function(state)
     end
 end)
 
--- AutoShoot
 local autoShootEnabled = false
 createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
     autoShootEnabled = state
@@ -399,7 +396,7 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
         task.spawn(function()
             local e = nil
             while autoShootEnabled do
-                task.wait(isMobile and 0.09 or 0.07)
+                task.wait(0.07)
                 local p = game.Players.LocalPlayer
                 local c = p.Character
                 if not c or not c:FindFirstChild("HumanoidRootPart") then task.wait(0.1) continue end
@@ -433,7 +430,6 @@ createToggle(Tab1Frame, 0.29, "AutoShoot", function(state)
     end
 end)
 
--- RightShift Toggle
 game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
     if gp then return end
     if input.KeyCode == Enum.KeyCode.RightShift then
@@ -441,4 +437,4 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
     end
 end)
 
-print("Rocket Spleef Exploit Loaded! (Mobile + AntiDie Fixed)")
+print("Rocket Spleef Exploit Has Loaded!")
